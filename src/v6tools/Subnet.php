@@ -55,9 +55,7 @@ class Subnet {
 
         for ($i = 1; $i <= ceil($this->preflen / 16); $i++) {
             $left = $this->preflen - 16 * ($i-1);
-            if ($left > 16) {
-                $left = 16;
-            }
+            $left = ($left <= 16) ?: 16;
             $mask = ~(0xffff >> $left) & 0xffff;
             if (($bytes_addr[$i] & $mask) != ($bytes_test[$i] & $mask)) {
                 return false;
