@@ -1,6 +1,4 @@
 <?php
-require_once ('v6tools/Autoload.php');
-
 class SubnetTest extends PHPUnit_Framework_TestCase {
     public function testIsInSubnet() {
         $c = new v6tools\Subnet('2a01:198:603:0::/65');

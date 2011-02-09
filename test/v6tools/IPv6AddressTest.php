@@ -1,7 +1,4 @@
 <?php
-
-require ('v6tools/Autoload.php');
-
 class IPv6AddressTest extends PHPUnit_Framework_TestCase {
     public function testExpand() {
         $addr = new v6tools\IPv6Address('2001::1');
