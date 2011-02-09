@@ -9,7 +9,7 @@ class IPv6AddressTest extends PHPUnit_Framework_TestCase {
     public function testCompact() {
         $addr = new v6tools\IPv6Address('2001:0000:0000:0000:0000:0000:0000:0001');
         $this->assertEquals('2001:0000:0000:0000:0000:0000:0000:0001',
-            $addr->toString());
+            $addr->__toString());
         $this->assertEquals('2001::1', $addr->compact());
     }
     /**
