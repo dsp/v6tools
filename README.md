@@ -7,7 +7,7 @@ PHP IPv6 Tools (v6tools) is a small library that provides validation of
 IPv6 addresses, subnets and EUI64.
 
     <?php
-    require('v6tools/Autoload.php');
+    require('v6tools/autoload.php');
     
     if (!v6tools\Runtime::isIPv6Supported()) {
         fprintf(STDERR, "No ipv6 support");
