@@ -12,6 +12,13 @@ namespace v6tools;
 class IPv6Address {
     private $addr;
 
+    const UNSPECIFIED = 0x0;
+    const MULTICAST = 0xff00;
+    const GLOBAL_UNICAST = 0x2000;
+    const LINK_LOCAL = 0xfe80;
+    const UNIQUE_LOCAL = 0xfc00;
+    const SITE_LOCAL = 0xfec0; /* decprecated */
+
     /**
      * Create a new instance for the given IPv6 address.
      *
@@ -57,6 +64,47 @@ class IPv6Address {
     }
 
     /**
+     * Check if the given address is global routed according to current
+     * IANA assignment.
+     *
+     * @return boolean
+     */
+    public function isGlobal() {
+        $prefix = $this->getRoutingPrefix();
+        return ($prefix & 0xe000) === self::GLOBAL_UNICAST
+            || $this->isMulticast();
+    }
+
+    /**
+     * Check if the given address is a uncode address according to current
+     * IANA assignment.
+     *
+     * @return boolean
+     */
+    public function isUnicast() {
+        return !$this->isMulticast();
+    }
+
+    /**
+     * Check if the given address is link local and will not be routed
+     * by a router.
+     *
+     * @return boolean
+     */
+    public function isLinkLocal() {
+        return ($this->getRoutingPrefix() & 0xffc0) === self::LINK_LOCAL;
+    }
+
+    /**
+     * Check if the given address is a multicast address.
+     *
+     * @return boolean
+     */
+    public function isMulticast() {
+        return ($this->getRoutingPrefix() & 0xff00) === self::MULTICAST;
+    }
+
+    /**
      * Returns the given address.
      *
      * The address is not expanded or compcated. It is returned
@@ -66,6 +114,16 @@ class IPv6Address {
      */
     public function __toString() {
         return $this->addr;
+    }
+
+    protected function getRoutingPrefix() {
+        $bytes = unpack('n*', inet_pton($this->addr));
+
+        if (count($bytes) < 1) {
+            return self::UNSPECIFIED;
+        }
+
+        return $bytes[1] & 0xffff;
     }
 }
 
