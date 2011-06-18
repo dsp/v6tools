@@ -25,11 +25,24 @@ class IPv6Address {
      * @param string $addr The IPv6 address
      */
     public function __construct($addr) {
-        if (!filter_var($addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        if (!self::validate($addr)) {
             throw new \InvalidArgumentException('Not a valid IPv6 address');
         }
 
         $this->addr = $addr;
+    }
+    
+    /**
+    * Test if the given address is a valid IPv6 address
+    *
+    * @param bool true when valid
+    */
+    public static function validate ($addr) {
+        if (!filter_var($addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            return false;
+        }
+        
+        return true;
     }
 
     /**
