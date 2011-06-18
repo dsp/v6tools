@@ -52,10 +52,9 @@ class Subnet {
 
         $bytes_addr = unpack("n*", inet_pton($this->addr));
         $bytes_test = unpack("n*", inet_pton($ipv6addr));
-
         for ($i = 1; $i <= ceil($this->preflen / 16); $i++) {
             $left = $this->preflen - 16 * ($i-1);
-            $left = ($left <= 16) ?: 16;
+            $left = ($left <= 16) ? $left : 16;
             $mask = ~(0xffff >> $left) & 0xffff;
             if (($bytes_addr[$i] & $mask) != ($bytes_test[$i] & $mask)) {
                 return false;
