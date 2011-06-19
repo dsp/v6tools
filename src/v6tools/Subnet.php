@@ -27,7 +27,7 @@ class Subnet {
         }
 
         list($addr, $preflen) = explode('/', $subnet);
-        if (!is_numeric($preflen) && $preflen > 255) {
+        if (!is_numeric($preflen) || $preflen > 255) {
             throw new \InvalidArgumentException("Not a valid IPv6 preflen.");
         }
 
