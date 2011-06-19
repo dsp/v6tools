@@ -35,7 +35,8 @@ class IPv6Address {
     /**
     * Test if the given address is a valid IPv6 address
     *
-    * @param bool true when valid
+    * @param string $addr The address to be validated as IPv6
+    * @return boolean
     */
     public static function validate ($addr) {
         if (!filter_var($addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
