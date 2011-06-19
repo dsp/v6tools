@@ -18,7 +18,7 @@ class EUI64 {
      * @param string $addr The IPv6 address
      */
     public function __construct($addr) {
-        if (!filter_var($addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        if (!IPv6Address::validate($addr)) {
             throw new \InvalidArgumentException("Not a valid IPv6 address.");
         }
 
