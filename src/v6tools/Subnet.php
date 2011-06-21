@@ -27,12 +27,12 @@ class Subnet {
         }
 
         list($addr, $preflen) = explode('/', $subnet);
-        if (!is_numeric($preflen)) {
+        if (!is_numeric($preflen) || $preflen > 255) {
             throw new \InvalidArgumentException("Not a valid IPv6 preflen.");
         }
 
-        if (!filter_var($addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-            throw new \InvalidArgumentException("Not a valid IPv6 subnet.");
+        if (!IPv6Address::validate($addr)) {
+            throw new \InvalidArgumentException("Not a valid IPv6 address.");
         }
 
         $this->addr = $addr;
@@ -46,7 +46,7 @@ class Subnet {
      * @param string The IPv6 address to check
      */
     public function isInSubnet($ipv6addr) {
-        if (!filter_var($ipv6addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        if (!IPv6Address::validate($ipv6addr)) {
             throw new \InvalidArgumentException("Not a valid IPv6 address.");
         }
 

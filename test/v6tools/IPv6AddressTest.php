@@ -1,5 +1,15 @@
 <?php
 class IPv6AddressTest extends PHPUnit_Framework_TestCase {
+
+    public function testValidatorValidAddress() {
+        $this->assertTrue(v6tools\IPv6Address::validate('2a01:198:603:0:89d8:32f6:cd7e:9172'));
+    }
+    
+    public function testValidatorInvalidAddress() {
+        $this->assertFalse(v6tools\IPv6Address::validate('2a01:ggg:xxx:0:89d8:32f6:::cd7e:9172'));
+    }
+    
+
     public function testExpand() {
         $addr = new v6tools\IPv6Address('2001::1');
         $this->assertEquals('2001:0000:0000:0000:0000:0000:0000:0001',
