@@ -1,0 +1,15 @@
+{
+    "name": "dsp/v6tools",
+    "type": "library",
+    "description": "IPv6 tools for PHP",
+    "keywords": ["network", "ipv6"],
+    "homepage": "http://github.com/dsp/v6tools",
+    "license": "MIT",
+    "authors": [{
+        "name": "David Soria Parra",
+        "email": "dsp@php.net"
+    }],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
