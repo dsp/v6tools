@@ -1,6 +1,7 @@
 PHP IPv6 Tools
 ==============
 
+[![Build Status](https://secure.travis-ci.org/dsp/v6tools.png?branch=master)](http://travis-ci.org/dsp/v6tools)
 [!["Flattr This"](http://api.flattr.com/button/flattr-badge-large.png "Flattr This")](http://flattr.com/thing/129857/PHP-IPv6-Tools")
 
 PHP IPv6 Tools (v6tools) is a small library that provides validation of
