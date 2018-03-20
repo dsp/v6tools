@@ -62,4 +62,41 @@ class Subnet {
         }
         return true;
     }
+
+    /**
+     * Generates EUI64 address
+     *
+     * @param string Mac address
+     */
+    public function getEUI64Address($mac) {
+        // Validate prefix length
+        if ($this->preflen != 64) {
+            throw new \InvalidArgumentException("Prefix length is not 64.");
+        }
+
+        // Validate mac address
+        if (!filter_var($mac, FILTER_VALIDATE_MAC)) {
+            throw new \InvalidArgumentException("Invalid mac address.");
+        }
+
+        // Expand MAC address
+        $mac = explode(':', str_replace(['.', '-', ':'], ':', $mac));
+        $mac = sprintf('%04x', (hexdec($mac[0]) << 8 | hexdec($mac[1])) ^ 0x200) .
+            sprintf('%04x', hexdec($mac[2]) << 8 | 0xff) .
+            sprintf('%04x', hexdec($mac[3]) | 0xfe00) .
+            sprintf('%02x', hexdec($mac[4])) .
+            sprintf('%02x', hexdec($mac[5]));
+
+        // Expand IP address
+        $ip = unpack('n*', inet_pton($this->addr));
+        $ip = implode('', array_map(function ($b) { return sprintf('%04x', $b); }, $ip));
+
+        for ($i = 1; $i <= strlen($mac); $i ++) {
+            $ip[strlen($ip) - $i] = $mac[strlen($mac) - $i];
+        }
+
+        // Return result
+        return wordwrap($ip, 4, ':', true);
+    }
+
 }
