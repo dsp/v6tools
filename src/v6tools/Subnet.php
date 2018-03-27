@@ -71,7 +71,7 @@ class Subnet {
     public function getEUI64Address($mac) {
         // Validate prefix length
         if ($this->preflen != 64) {
-            throw new \InvalidArgumentException("Prefix length is not 64.");
+            throw new \InvalidArgumentException("Generating of IP addresses using EUI64 is only allowed in autoconfigured networks (/64 subnets). You must use a 64 bit prefix.");
         }
 
         // Validate mac address
@@ -79,24 +79,24 @@ class Subnet {
             throw new \InvalidArgumentException("Invalid mac address.");
         }
 
-        // Expand MAC address
+        // Expand MAC address and convert it to AAAA:AAAA:AAAA:AAAA format for simple merge with IPv6 address
         $mac = explode(':', str_replace(['.', '-', ':'], ':', $mac));
-        $mac = sprintf('%04x', (hexdec($mac[0]) << 8 | hexdec($mac[1])) ^ 0x200) .
-            sprintf('%04x', hexdec($mac[2]) << 8 | 0xff) .
-            sprintf('%04x', hexdec($mac[3]) | 0xfe00) .
+        $mac = sprintf('%04x', (hexdec($mac[0]) << 8 | hexdec($mac[1])) ^ 0x200) . ':' .
+            sprintf('%04x', hexdec($mac[2]) << 8 | 0xff) . ':' .
+            sprintf('%04x', hexdec($mac[3]) | 0xfe00) . ':' .
             sprintf('%02x', hexdec($mac[4])) .
             sprintf('%02x', hexdec($mac[5]));
 
         // Expand IP address
-        $ip = unpack('n*', inet_pton($this->addr));
-        $ip = implode('', array_map(function ($b) { return sprintf('%04x', $b); }, $ip));
+        $ip = new IPv6Address($this->addr);
+        $ip = $ip->expand();
 
         for ($i = 1; $i <= strlen($mac); $i ++) {
             $ip[strlen($ip) - $i] = $mac[strlen($mac) - $i];
         }
 
         // Return result
-        return wordwrap($ip, 4, ':', true);
+        return new IPv6Address($ip);
     }
 
 }
