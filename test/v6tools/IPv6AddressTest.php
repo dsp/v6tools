@@ -1,5 +1,7 @@
 <?php
-class IPv6AddressTest extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class IPv6AddressTest extends TestCase {
 
     public function testValidatorValidAddress() {
         $this->assertTrue(v6tools\IPv6Address::validate('2a01:198:603:0:89d8:32f6:cd7e:9172'));
